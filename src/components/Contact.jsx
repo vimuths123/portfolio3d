@@ -27,10 +27,16 @@ const Contact = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
+    const response = await fetch('/.netlify/functions/submit-form', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+
+    setLoading(false);
     // emailjs
     //   .send(
     //     import.meta.env.VITE_APP_EMAILJS_SERVICE_ID,
