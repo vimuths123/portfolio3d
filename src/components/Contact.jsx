@@ -30,7 +30,7 @@ const Contact = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-
+    const data = form;
     const response = await fetch('/.netlify/functions/submit-form', {
       method: 'POST',
       body: JSON.stringify(data),
