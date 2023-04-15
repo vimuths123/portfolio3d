@@ -30,10 +30,10 @@ exports.handler = async (event, context) => {
     auth: {
       type: 'OAuth2',
       user: process.env.EMAIL_ADDRESS,
-      clientId: process.env.GMAIL_CLIENT_ID,
-      clientSecret: process.env.GMAIL_CLIENT_SECRET,
-      refreshToken: process.env.GMAIL_REFRESH_TOKEN,
-      accessToken: accessToken,
+      // clientId: process.env.GMAIL_CLIENT_ID,
+      // clientSecret: process.env.GMAIL_CLIENT_SECRET,
+      // refreshToken: process.env.GMAIL_REFRESH_TOKEN,
+      // accessToken: accessToken,
       pass: 'cgxymgmnlxzmanzf',
     }
   });
