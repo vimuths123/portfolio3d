@@ -2,7 +2,7 @@
   "name": "portfolio3d",
   "private": true,
   "version": "0.0.0",
-  "type": "module",
+  "type": "commonjs",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -13,7 +13,9 @@
     "@react-three/drei": "^9.57.3",
     "@react-three/fiber": "^8.12.0",
     "framer-motion": "^10.3.0",
+    "googleapis": "^118.0.0",
     "maath": "^0.5.2",
+    "nodemailer": "^6.9.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.9.0",
