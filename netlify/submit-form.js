@@ -1,6 +1,6 @@
 // exports.handler = async (event) => {
 //     const { name, email, message } = JSON.parse(event.body);
-    
+
 //     // Do something with the form data, such as send it to a database or send an email
 //     return {
 //         statusCode: 200,
@@ -8,7 +8,7 @@
 //     };
 // };
 
-const {google} = require('googleapis');
+const { google } = require('googleapis');
 const nodemailer = require('nodemailer');
 const OAuth2 = google.auth.OAuth2;
 
@@ -26,7 +26,10 @@ exports.handler = async (event, context) => {
   const accessToken = await oAuth2Client.getAccessToken();
 
   const transporter = nodemailer.createTransport({
-    service: 'gmail',
+    // service: 'gmail',
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true,
     auth: {
       type: 'OAuth2',
       user: process.env.EMAIL_ADDRESS,
@@ -48,6 +51,6 @@ exports.handler = async (event, context) => {
 
   return {
     statusCode: 200,
-    body: JSON.stringify({message: 'Email sent successfully'})
+    body: JSON.stringify({ message: 'Email sent successfully' })
   };
 };
