@@ -13,6 +13,9 @@ const nodemailer = require('nodemailer');
 const OAuth2 = google.auth.OAuth2;
 
 exports.handler = async (event, context) => {
+
+  const { name, email, message } = JSON.parse(event.body);
+
   const oAuth2Client = new OAuth2(
     process.env.GMAIL_CLIENT_ID,
     process.env.GMAIL_CLIENT_SECRET,
@@ -51,8 +54,14 @@ exports.handler = async (event, context) => {
   const mailOptions = {
     from: process.env.EMAIL_ADDRESS,
     to: 'vimuthtweet@gmail.com',
-    subject: 'Test email',
-    text: 'This is a test email3'
+    subject: 'Contact Us Data',
+    html: `
+            <h2>Contact Form Submission</h2>
+            <p><strong>Name:</strong> ${name}</p>
+            <p><strong>Email:</strong> ${email}</p>
+            <p><strong>Message:</strong></p>
+            <p>${message}</p>
+        `
   };
 
   const result = await transporter.sendMail(mailOptions);
