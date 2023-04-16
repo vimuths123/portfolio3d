@@ -43,8 +43,8 @@ exports.handler = async (event, context) => {
     port: 465,
     secure: true,
     auth: {
-      user: 'williamboomerbaker@gmail.com',
-      pass: 'iyifviwffawfvwva',
+      user: process.env.EMAIL_ADDRESS,
+      pass: process.env.GMAIL_PASSWORD,
     },
   });
 
