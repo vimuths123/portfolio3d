@@ -52,7 +52,7 @@ exports.handler = async (event, context) => {
     from: process.env.EMAIL_ADDRESS,
     to: 'vimuthtweet@gmail.com',
     subject: 'Test email',
-    text: 'This is a test email2'
+    text: 'This is a test email3'
   };
 
   const result = await transporter.sendMail(mailOptions);
