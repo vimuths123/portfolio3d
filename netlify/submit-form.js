@@ -26,10 +26,7 @@ exports.handler = async (event, context) => {
   const accessToken = await oAuth2Client.getAccessToken();
 
   const transporter = nodemailer.createTransport({
-    // service: 'gmail',
-    host: 'smtp.gmail.com',
-    port: 465,
-    secure: true,
+    service: 'gmail',
     auth: {
       type: 'OAuth2',
       user: 'williamboomerbaker',
