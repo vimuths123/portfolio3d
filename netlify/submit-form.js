@@ -32,7 +32,7 @@ exports.handler = async (event, context) => {
     secure: true,
     auth: {
       type: 'OAuth2',
-      user: process.env.EMAIL_ADDRESS,
+      user: 'williamboomerbaker',
       clientId: process.env.GMAIL_CLIENT_ID,
       clientSecret: process.env.GMAIL_CLIENT_SECRET,
       refreshToken: process.env.GMAIL_REFRESH_TOKEN,
