@@ -27,9 +27,12 @@ exports.handler = async (event, context) => {
 
   const transporter = nodemailer.createTransport({
     service: 'gmail',
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true,
     auth: {
       type: 'OAuth2',
-      user: 'williamboomerbaker',
+      user: 'williamboomerbaker@gmail.com',
       clientId: process.env.GMAIL_CLIENT_ID,
       clientSecret: process.env.GMAIL_CLIENT_SECRET,
       refreshToken: process.env.GMAIL_REFRESH_TOKEN,
