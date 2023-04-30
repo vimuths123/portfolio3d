@@ -85,7 +85,7 @@ const About = () => {
   useEffect(() => {
     client
       .fetch(
-        `*[_type == "service"]{
+        `*[_type == "service"]|order(orderRank){
       title,
       image
     }`

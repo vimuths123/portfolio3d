@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   VerticalTimeline,
   VerticalTimelineElement,
@@ -11,6 +11,16 @@ import { styles } from "../styles";
 import { experiences } from "../constants";
 import { SectionWrapper } from "../hoc";
 import { textVariant } from "../utils/motion";
+import sanityClient from "@sanity/client";
+import imageUrlBuilder from "@sanity/image-url";
+
+const client = sanityClient({
+  projectId: 'oz0oe4vn',
+  dataset: 'production',
+  useCdn: true,
+});
+
+const builder = imageUrlBuilder(client);
 
 const ExperienceCard = ({ experience }) => {
   return (
@@ -21,11 +31,12 @@ const ExperienceCard = ({ experience }) => {
       }}
       contentArrowStyle={{ borderRight: "7px solid  #232631" }}
       date={experience.date}
-      iconStyle={{ background: experience.iconBg }}
+      iconStyle={{ background: experience.iconBg.hex }}
       icon={
         <div className='flex justify-center items-center w-full h-full'>
           <img
-            src={experience.icon}
+            // src={experience.icon}
+            src={builder.image(experience.icon).url()}
             alt={experience.company_name}
             className='w-[60%] h-[60%] object-contain'
           />
@@ -57,8 +68,31 @@ const ExperienceCard = ({ experience }) => {
 };
 
 const Experience = () => {
+
+  const [experienceItems, setExperienceItems] = useState([]);
+
+  useEffect(() => {
+    client
+      .fetch(
+        `*[_type == "experience"]|order(orderRank){
+      title,
+      icon,
+      company_name,
+      iconBg,
+      date,
+      points
+    }`
+      )
+      .then(async (data) => {
+        await setExperienceItems(data)
+        console.log(await experienceItems)
+      })
+      .catch(console.error);
+  }, []);
+
   return (
     <>
+      {console.log(experienceItems)}
       <motion.div variants={textVariant()}>
         <p className={`${styles.sectionSubText} text-center`}>
           What I have done so far
@@ -70,12 +104,18 @@ const Experience = () => {
 
       <div className='mt-20 flex flex-col'>
         <VerticalTimeline>
-          {experiences.map((experience, index) => (
+          {experienceItems.map((experience, index) => (
+            <ExperienceCard
+              key={`${index}`}
+              experience={experience}
+            />
+          ))}
+          {/* {experiences.map((experience, index) => (
             <ExperienceCard
               key={`experience-${index}`}
               experience={experience}
             />
-          ))}
+          ))} */}
         </VerticalTimeline>
       </div>
     </>
