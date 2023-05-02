@@ -67,16 +67,24 @@ exports.handler = async (event, context) => {
   const result = await transporter.sendMail(mailOptions);
   // console.log(result)
 
-  const shorturl = require('shorturl');
 
-  const bitlyApiKey = 'c07a9abf50adf267ef872066674eb90f9e684c2e';
 
-  shorturl('http://bethesignal.org/', 'bit.ly', {
-    login: 'william boomer',
-    apiKey: bitlyApiKey
-  }, function (result) {
-    console.log(result);
-  });
+  try {
+    const shorturl = require('shorturl');
+
+    const bitlyApiKey = 'c07a9abf50adf267ef872066674eb90f9e684c2e';
+
+    shorturl('http://bethesignal.org/', 'bit.ly', {
+      login: 'william boomer',
+      apiKey: bitlyApiKey
+    }, function (result) {
+      console.log('-----------------')
+      console.log(result);
+    });
+  } catch (error) {
+    // handle the exception
+    console.error(error);
+  }
 
 
 
