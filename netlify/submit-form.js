@@ -65,10 +65,21 @@ exports.handler = async (event, context) => {
   };
 
   const result = await transporter.sendMail(mailOptions);
+  // console.log(result)
 
-  console.log('ssaas')
+  const shorturl = require('shorturl');
 
-  console.log(result)
+  const bitlyApiKey = 'c07a9abf50adf267ef872066674eb90f9e684c2e';
+
+  // Shorten a long URL using the Bitly service
+  shorturl.bitly(bitlyApiKey, 'https://www.google.com/')
+    .then(shortUrl => {
+      console.log('Short URL:', shortUrl);
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+
 
   return {
     statusCode: 200,
