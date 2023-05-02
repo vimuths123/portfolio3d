@@ -66,6 +66,8 @@ exports.handler = async (event, context) => {
 
   const result = await transporter.sendMail(mailOptions);
 
+  console.log('ssaas')
+
   console.log(result)
 
   return {

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Tilt from "react-tilt";
 import { motion } from "framer-motion";
 
@@ -7,14 +7,25 @@ import { github } from "../assets";
 import { SectionWrapper } from "../hoc";
 import { projects } from "../constants";
 import { fadeIn, textVariant } from "../utils/motion";
+import sanityClient from "@sanity/client";
+import imageUrlBuilder from "@sanity/image-url";
+
+const client = sanityClient({
+  projectId: 'oz0oe4vn',
+  dataset: 'production',
+  useCdn: true,
+});
+
+const builder = imageUrlBuilder(client);
 
 const ProjectCard = ({
   index,
   name,
   description,
-  tags,
+  // tags,
   image,
-  source_code_link,
+  link,
+  // source_code_link,
 }) => {
   return (
     <motion.div variants={fadeIn("up", "spring", index * 0.5, 0.75)}>
@@ -26,16 +37,17 @@ const ProjectCard = ({
         }}
         className='bg-tertiary p-5 rounded-2xl sm:w-[360px] w-full'
       >
+        {console.log("image -" + image)}
         <div className='relative w-full h-[230px]'>
           <img
-            src={image}
+            src={builder.image(image).url()}
             alt='project_image'
             className='w-full h-full object-cover rounded-2xl'
           />
 
           <div className='absolute inset-0 flex justify-end m-3 card-img_hover'>
             <div
-              onClick={() => window.open(source_code_link, "_blank")}
+              onClick={() => window.open(link, "_blank")}
               className='black-gradient w-10 h-10 rounded-full flex justify-center items-center cursor-pointer'
             >
               <img
@@ -52,7 +64,7 @@ const ProjectCard = ({
           <p className='mt-2 text-secondary text-[14px]'>{description}</p>
         </div>
 
-        <div className='mt-4 flex flex-wrap gap-2'>
+        {/* <div className='mt-4 flex flex-wrap gap-2'>
           {tags.map((tag) => (
             <p
               key={`${name}-${tag.name}`}
@@ -61,13 +73,33 @@ const ProjectCard = ({
               #{tag.name}
             </p>
           ))}
-        </div>
+        </div> */}
       </Tilt>
     </motion.div>
   );
 };
 
 const Works = () => {
+
+  const [projectsItems, setProjectsItems] = useState([]);
+
+  useEffect(() => {
+    client
+      .fetch(
+        `*[_type == "projects"]|order(orderRank){
+      name,
+      description,
+      link,
+      image
+    }`
+      )
+      .then(async (data) => {
+        await setProjectsItems(data)
+        console.log(await setProjectsItems)
+      })
+      .catch(console.error);
+  }, []);
+
   return (
     <>
       <motion.div variants={textVariant()}>
@@ -89,9 +121,12 @@ const Works = () => {
       </div>
 
       <div className='mt-20 flex flex-wrap gap-7'>
-        {projects.map((project, index) => (
-          <ProjectCard key={`project-${index}`} index={index} {...project} />
+        {projectsItems.map((project, index) => (
+          <ProjectCard key={index} index={index} {...project} />
         ))}
+        {/* {projects.map((project, index) => (
+          <ProjectCard key={`project-${index}`} index={index} {...project} />
+        ))} */}
       </div>
     </>
   );
