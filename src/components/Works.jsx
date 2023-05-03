@@ -37,7 +37,7 @@ const ProjectCard = ({
         }}
         className='bg-tertiary p-5 rounded-2xl sm:w-[360px] w-full'
       >
-        {console.log("image -" + image)}
+        {/* {console.log("image -" + image)} */}
         <div className='relative w-full h-[230px]'>
           <img
             src={builder.image(image).url()}
@@ -59,10 +59,11 @@ const ProjectCard = ({
           </div>
         </div>
 
-        <div className='mt-5'>
+        <div className='mt-5 mb-2'>
           <h3 className='text-white font-bold text-[24px]'>{name}</h3>
           <p className='mt-2 text-secondary text-[14px]'>{description}</p>
         </div>
+        {/* <a className="cursor-pointer" href={link}>Read More..</a> */}
 
         {/* <div className='mt-4 flex flex-wrap gap-2'>
           {tags.map((tag) => (
@@ -95,7 +96,7 @@ const Works = () => {
       )
       .then(async (data) => {
         await setProjectsItems(data)
-        console.log(await setProjectsItems)
+        // console.log(await setProjectsItems)
       })
       .catch(console.error);
   }, []);

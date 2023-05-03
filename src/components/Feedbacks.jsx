@@ -1,10 +1,20 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
 import { styles } from "../styles";
 import { SectionWrapper } from "../hoc";
 import { fadeIn, textVariant } from "../utils/motion";
 import { testimonials } from "../constants";
+import sanityClient from "@sanity/client";
+import imageUrlBuilder from "@sanity/image-url";
+
+const client = sanityClient({
+  projectId: 'oz0oe4vn',
+  dataset: 'production',
+  useCdn: true,
+});
+
+const builder = imageUrlBuilder(client);
 
 const FeedbackCard = ({
   index,
@@ -34,7 +44,7 @@ const FeedbackCard = ({
         </div>
 
         <img
-          src={image}
+          src={builder.image(image).url()}
           alt={`feedback_by-${name}`}
           className='w-10 h-10 rounded-full object-cover'
         />
@@ -44,6 +54,27 @@ const FeedbackCard = ({
 );
 
 const Feedbacks = () => {
+
+  const [testimonialItmes, setTestimonialItmes] = useState([]);
+
+  useEffect(() => {
+    client
+      .fetch(
+        `*[_type == "testimonials"]|order(orderRank){
+      testimonial,    
+      name,
+      designation,
+      company,
+      image
+    }`
+      )
+      .then(async (data) => {
+        await setTestimonialItmes(data)
+        // console.log(await setProjectsItems)
+      })
+      .catch(console.error);
+  }, []);
+
   return (
     <div className={`mt-12 bg-black-100 rounded-[20px]`}>
       <div
@@ -55,9 +86,12 @@ const Feedbacks = () => {
         </motion.div>
       </div>
       <div className={`-mt-20 pb-14 ${styles.paddingX} flex flex-wrap gap-7`}>
-        {testimonials.map((testimonial, index) => (
+        {testimonialItmes.map((testimonial, index) => (
           <FeedbackCard key={testimonial.name} index={index} {...testimonial} />
         ))}
+        {/* {testimonials.map((testimonial, index) => (
+          <FeedbackCard key={testimonial.name} index={index} {...testimonial} />
+        ))} */}
       </div>
     </div>
   );
